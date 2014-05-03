@@ -1,0 +1,15 @@
+@relation test
+
+@attribute Time set([])
+@attribute Network set(['MODEM', 'WIFI'])
+@attribute NetworkTrafficRec set([])
+@attribute NetworkTrafficSent set([])
+@attribute ApplicationStart set([])
+@attribute Weather set([])
+@attribute Screen set(['ON'])
+
+
+@data
+None,WIFI,None,None,None,None,None
+None,MODEM,None,None,None,None,None
+None,None,None,None,None,None,ON
