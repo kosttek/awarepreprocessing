@@ -1,3 +1,5 @@
+from parser.parser_classes import NetworkTrafficParser, NetworkParser, ApplicationHistoryParser, ScreenParser, WeatherParser
+
 __author__ = 'kosttek'
 
 
@@ -24,30 +26,30 @@ class GenericType():
 
 
 class Time(GenericType):
-    pass
+    parser = None
 
 
 class Network(GenericType):
-    pass
+    parser = NetworkParser
 
 
 class NetworkTrafficRec(GenericType):
-    pass
+    parser = NetworkTrafficParser
 
 
 class NetworkTrafficSent(GenericType):
-    pass
+    parser = NetworkTrafficParser
 
 
 class Screen(GenericType):
-    pass
+    parser = ScreenParser
 
 
 class Weather(GenericType):
-    pass
+    parser = WeatherParser
 
 
 class ApplicationStart(GenericType):
-    pass
+    parser = ApplicationHistoryParser
 
 

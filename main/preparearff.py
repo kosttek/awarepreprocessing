@@ -1,5 +1,6 @@
 __author__ = 'kosttek'
-from datamodel import *
+from datamodel.types import *
+from datamodel.learinigsetelement import *
 
 
 class PrepareArff():
@@ -54,22 +55,12 @@ class PrepareArff():
         for element in vals:
             PrepareArff.write_learning_element(file_des,element)
 
-    elements_vals={
-        Network:LearningSetElement.get_network,
-        NetworkTrafficSent:LearningSetElement.get_network_traffic_sent,
-        NetworkTrafficRec:LearningSetElement.get_network_traffic_rec,
-        ApplicationStart:LearningSetElement.get_application_start,
-        Weather:LearningSetElement.get_weather,
-        Time:LearningSetElement.get_time,
-        Screen:LearningSetElement.get_screen
-        }
+
     @staticmethod
     def write_learning_element(file_des,element):
         result = ""
         for variable in PrepareArff.variables_set:
-            method=PrepareArff.elements_vals[variable]
-            variable_instance = method(element)
-            raw_value  = variable_instance.get_value()
+            raw_value = element[variable].get_value()
             val = PrepareArff.filterVar(raw_value)
             result += val+","
         result = result[0:-1]

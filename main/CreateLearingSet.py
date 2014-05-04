@@ -1,5 +1,5 @@
 from conffiles.defaultconfigvalues import ConfigVals
-from datamodel import Screen, NetworkTrafficSent, ApplicationStart, Network, Weather, NetworkTrafficRec, Time
+
 from datamodel.parserdictionary import UpdateElement
 from main.Config import Config
 from main.SortedRawAwareEvents import SortedRawAwareEvents
@@ -44,13 +44,13 @@ if __name__ == "__main__":
     sample = LearningSetElement()
     print len(result)
 
-    print Screen.values_set
-    print NetworkTrafficSent.values_set
-    print NetworkTrafficRec.values_set
-    print ApplicationStart.values_set
-    print Network.values_set
-    print Weather.values_set
-    print Time.values_set
+    # print Screen.values_set
+    # print NetworkTrafficSent.values_set
+    # print NetworkTrafficRec.values_set
+    # print ApplicationStart.values_set
+    # print Network.values_set
+    # print Weather.values_set
+    # print Time.values_set
 
     pa = PrepareArff()
     pa.prepare_association_file("aware_association",result)

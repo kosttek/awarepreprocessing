@@ -1,5 +1,6 @@
 import datetime
-from datamodel import ParserDict
+#from datamodel import Time, NetworkTrafficSent, Network, NetworkTrafficRec, ApplicationStart, Weather, Screen
+#from datamodel import types
 
 __author__ = 'kosttek'
 
@@ -21,8 +22,9 @@ class GenericParser():
 
     def parse_time(self,event):
         '''return  tuples (time,value)'''
+        from datamodel.types import Time
         day_of_week = datetime.datetime.fromtimestamp(event.timestamp/1000).weekday()
-        return (ParserDict.time, day_of_week)
+        return (Time, day_of_week)
 
     #abstract
     def parse_value(self,event):
@@ -35,7 +37,8 @@ class ApplicationHistoryParser(GenericParser):
     table = "applications_history"
 
     def parse_value(self,event):
-        return (ParserDict.application_start,event.application_name)
+        from datamodel.types import ApplicationStart
+        return (ApplicationStart,event.application_name)
 
 
 class NetworkParser(GenericParser):
@@ -43,14 +46,15 @@ class NetworkParser(GenericParser):
     table = "network"
 
     def parse_value(self,event):
-        return (ParserDict.network,event.network_subtype)
+        from datamodel.types import Network
+        return (Network,event.network_subtype)
 
 class NetworkTrafficParser(GenericParser):
 
     table = "network_traffic"
 
     def parse_value(self,event):
-
+        from datamodel.types import NetworkTrafficSent, NetworkTrafficRec
         type = event.network_type
         traffic_rec_val = event.double_received_bytes
         traffic_sent_val = event.double_sent_bytes
@@ -58,7 +62,7 @@ class NetworkTrafficParser(GenericParser):
         result_rec = str(type) + self.getVal(traffic_rec_val) +"_REC"
         result_sent = str(type)+self.getVal(traffic_sent_val)+"_SENT"
 
-        return [(ParserDict.network_traffic_rec,result_rec),(ParserDict.network_traffic_sent,result_sent)]
+        return [(NetworkTrafficRec,result_rec),(NetworkTrafficSent,result_sent)]
 
     def getVal(self,intval):
         if intval > 30000:
@@ -73,16 +77,18 @@ class WeatherParser(GenericParser):
     table = "plugin_weather_current"
 
     def parse_value(self,event):
-        return (ParserDict.weather,event.weather_name)
+        from datamodel.types import Weather
+        return (Weather,event.weather_name)
 
 class ScreenParser(GenericParser):
 
     table = "screen"
 
-    screen_status = {0: "OFF", 1: "ON", 2: "LOCKED", 3: "UNLOCKED"}
+    screen_status_switch = {0: "OFF", 1: "ON", 2: "LOCKED", 3: "UNLOCKED"}
 
     def parse_value(self,event):
-        return (ParserDict.screen,self.screen_status[event.screen_status])
+        from datamodel.types import Screen
+        return (Screen,self.screen_status_switch[event.screen_status])
 
 
 

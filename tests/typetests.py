@@ -1,6 +1,6 @@
 __author__ = 'kosttek'
 import unittest
-from datamodel import Time, Screen
+from datamodel.types import Time, Screen
 
 class TestTypes(unittest.TestCase):
     def setUp(self):
