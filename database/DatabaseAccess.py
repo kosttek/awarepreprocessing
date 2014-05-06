@@ -12,8 +12,15 @@ import json
 
 class DatabaseAccess():
     Base = declarative_base()
-    def __init__(self,username,password,databasename):
+    def init_mysql(self,username,password,databasename):
         self.engine = create_engine('mysql://'+username+':'+password+'@localhost/'+databasename, echo=True)
+        self._init()
+
+    def init_sqlite(self,filename):
+        self.engine = create_engine('sqlite:///'+filename)
+        self._init()
+
+    def _init(self):
         Session = sessionmaker(bind=self.engine)
         self.session = Session()
         self.Base.metadata.create_all(self.engine)

@@ -4,7 +4,8 @@ __author__ = 'kosttek'
 
 from copy import deepcopy
 import unittest
-from datamodel.learinigsetelement import LearningSetElement, Network
+from datamodel.learinigsetelement import LearningSetElement
+from datamodel.types import Network
 from datamodel.parserdictionary import  UpdateElement
 
 

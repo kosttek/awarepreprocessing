@@ -13,7 +13,17 @@ class SortedRawAwareEvents(list):
     values : tuples of values -> class 'sqlalchemy.util._collections.KeyedTuple'
     '''
     def _get_events_from_MySQL(self,username,password,databasename,tables):
-        dbAccess = DatabaseAccess(username=username,password=password,databasename=databasename)
+        dbAccess = DatabaseAccess()
+        dbAccess.init_mysql(username=username,password=password,databasename=databasename)
+        self._get_events(dbAccess,tables)
+
+    def _get_events_from_SQLite(self,filename,tables):
+        dbAccess= DatabaseAccess()
+        dbAccess.init_sqlite(filename)
+        self._get_events(dbAccess,tables)
+
+
+    def _get_events(self,dbAccess,tables):
         tables = dbAccess.getTables(tables)
         for table in tables:
             events = dbAccess.queryAllFromTable(table)
@@ -21,12 +31,21 @@ class SortedRawAwareEvents(list):
             self += events_plus_type
         self.sort( key=lambda k: k['values'].timestamp)
 
+
     def get_events_from_MySQL(self):
         if (Config.username or Config.password or Config.databasename or Config.tables) == None:
             print "Load config file!"
             print Config.username, Config.password, Config.databasename, Config.tables
             return
         self._get_events_from_MySQL(username=Config.username, password=Config.password, databasename=Config.databasename, tables=Config.tables)
+
+    def get_events_from_SQLite(self):
+        if (Config.dbfile or Config.tables) == None:
+            print "Load config file!"
+            print Config.dbfile, Config.tables
+            return
+        self._get_events_from_SQLite(filename=Config.dbfile, tables=Config.tables)
+
 
 
     def filter_by_occurance_time(self):

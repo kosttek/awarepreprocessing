@@ -1,3 +1,5 @@
+from conffiles.defaultconfigvalues import ConfigVals
+
 __author__ = 'kosttek'
 from datamodel.types import *
 from datamodel.learinigsetelement import *
@@ -30,12 +32,27 @@ class PrepareArff():
         new_val_set=set()
         for val in var.values_set:
             new_val_set.add(PrepareArff.filterVar(val))
-        file_des.write("@attribute "+var_filtered+" "+str(new_val_set)+"\n")
+        file_des.write("@attribute "+var_filtered+" "+PrepareArff.write_set_values(new_val_set)+"\n")
+
+    @staticmethod
+    def write_set_values(set):
+
+        try:
+            result = ""
+            for val in set:
+                result+=PrepareArff.filterVar(val)+","
+            result=result[0:-1]
+            return "{"+result+"}"
+        except TypeError:
+            return "{}"
+
+
 
     @staticmethod
     def filterVar(var):
         var = str(var)
         var = var.replace("%","<pr>")
+        var = var.replace("\n","")
         var = var.replace("\\n","")
         var = var.replace("\\r","")
         var = var.replace("\"","||")
@@ -61,6 +78,8 @@ class PrepareArff():
         result = ""
         for variable in PrepareArff.variables_set:
             raw_value = element[variable].get_value()
+            if raw_value is None:
+                raw_value="?"
             val = PrepareArff.filterVar(raw_value)
             result += val+","
         result = result[0:-1]
@@ -68,13 +87,14 @@ class PrepareArff():
 
 
 if __name__ == "__main__":
+    Config.load_config(ConfigVals)
     data = list()
     el = LearningSetElement()
-    el.network.set_value("WIFI")
+    el[Network].set_value("WIFI")
     el2 = LearningSetElement()
-    el2.network.set_value("MODEM")
+    el2[Network].set_value("MODEM\nMM")
     el3 = LearningSetElement()
-    el3.screen.set_value("ON")
+    el3[Screen].set_value("ON")
 
 
     data.append(el)

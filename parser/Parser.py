@@ -1,16 +1,10 @@
+from main.Config import Config
+
 __author__ = 'kosttek'
 
 from datamodel.learinigsetelement import LearningSetElement
 
 class Parser():
-    #todo
-    # parsers_implementations = [
-    #     ApplicationHistoryParser,
-    #     NetworkParser,
-    #     NetworkTrafficParser,
-    #     ScreenParser,
-    #     WeatherParser
-    # ]
 
     def __init__(self):
         self.table_parser_dict = self._create_table_parser_dict()
@@ -27,7 +21,7 @@ class Parser():
     def _create_table_parser_dict(self):
         result = dict()
         parser_set = set()
-        for type in LearningSetElement.attributes:
+        for type in Config.attributes:
             if type.parser is not None:
                 parser_set.add(type.parser)
 

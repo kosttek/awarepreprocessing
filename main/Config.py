@@ -7,14 +7,20 @@ class Config():
     password = None
     databasename = None
     tables = None
-    # state_values = None
-    # point_values = None
+    attributes = None
+    point_event_attributes = None
+    sqltype = None
+    dbfile = None
 
     @staticmethod
     def load_config(configclass):
-        Config.username = configclass.username
-        Config.password = configclass.password
-        Config.databasename = configclass.databasename
+        Config.sqltype = configclass.sqltype
+        if Config.sqltype == "mysql":
+            Config.username = configclass.username
+            Config.password = configclass.password
+            Config.databasename = configclass.databasename
+        elif Config.sqltype == "sqlite":
+            Config.dbfile = configclass.dbfile
         Config.tables = configclass.tables
-        # Config.state_values = configclass.state_values
-        # Config.point_values = configclass.point_values
+        Config.attributes = configclass.attributes
+        Config.point_event_attributes = configclass.point_event_attributes

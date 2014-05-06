@@ -15,8 +15,8 @@ class CreateLearningSet():
 
 
 
-    def create(self):
-        Config.load_config(ConfigVals)
+    def create(self,configfile):
+        Config.load_config(configfile)
         sortedEvents = SortedRawAwareEvents()
         sortedEvents.get_events_from_MySQL()
         print "sorted"
@@ -39,18 +39,8 @@ class CreateLearningSet():
 
 if __name__ == "__main__":
     cls = CreateLearningSet()
-    result = cls.create()
-    sample = result[10000]
-    sample = LearningSetElement()
+    result = cls.create(ConfigVals)
     print len(result)
-
-    # print Screen.values_set
-    # print NetworkTrafficSent.values_set
-    # print NetworkTrafficRec.values_set
-    # print ApplicationStart.values_set
-    # print Network.values_set
-    # print Weather.values_set
-    # print Time.values_set
 
     pa = PrepareArff()
     pa.prepare_association_file("aware_association",result)
