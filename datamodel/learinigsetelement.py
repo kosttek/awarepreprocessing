@@ -6,11 +6,13 @@ __author__ = 'kosttek'
 
 class LearningSetElement():
 
+
+
     def __init__(self):
-        self.values = dict()
         self.attributes = Config.attributes
         self.point_event_attributes = Config.point_event_attributes
-        self.date = None
+        self.values = dict()
+
 
         for type_obj in self.attributes:
             self.values[type_obj] = type_obj()

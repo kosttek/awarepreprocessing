@@ -1,4 +1,4 @@
-from parser.parser_classes import NetworkTrafficParser, NetworkParser, ApplicationHistoryParser, ScreenParser, WeatherParser
+from parser.parser_classes import NetworkTrafficParser, NetworkParser, ApplicationHistoryParser, ScreenParser, WeatherParser, ActivityParser, ApplicationForegroundParser
 
 __author__ = 'kosttek'
 
@@ -51,5 +51,13 @@ class Weather(GenericType):
 
 class ApplicationStart(GenericType):
     parser = ApplicationHistoryParser
+
+
+class ApplicationForeground(GenericType):
+    parser = ApplicationForegroundParser
+
+
+class Activity(GenericType):
+    parser = ActivityParser
 
 

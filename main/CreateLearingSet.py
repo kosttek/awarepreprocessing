@@ -24,7 +24,7 @@ class CreateLearningSet():
         result = list()
 
         temp_learning_element = LearningSetElement()
-
+        i = 0
         for event in sortedEvents:
             learning_element = temp_learning_element.clone()
 
@@ -34,6 +34,8 @@ class CreateLearningSet():
             result.append(learning_element)
             temp_learning_element = learning_element
 
+            i+=1
+            print i
         return result
 
 

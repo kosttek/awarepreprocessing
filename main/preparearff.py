@@ -7,6 +7,10 @@ from datamodel.learinigsetelement import *
 
 class PrepareArff():
 
+
+    def __init__(self):
+        PrepareArff.variables_set = Config.attributes
+
     def prepare_association_file(self, relation_name, data):
         f = open(relation_name+".arff","w")
         self.write_relation(f, relation_name)
@@ -18,10 +22,12 @@ class PrepareArff():
     def write_relation(file_des, relation_name):
         file_des.write("@relation "+relation_name+"\n")
 
-    variables_set = [Time,Network,NetworkTrafficRec,NetworkTrafficSent,ApplicationStart,Weather,Screen]
+
+
 
     @staticmethod
     def write_atributes(file_des):
+        set = PrepareArff.variables_set
         file_des.write("\n")
         for var in PrepareArff.variables_set:
             PrepareArff.write_var(file_des,var)
@@ -74,7 +80,7 @@ class PrepareArff():
 
 
     @staticmethod
-    def write_learning_element(file_des,element):
+    def get_learning_element(element):
         result = ""
         for variable in PrepareArff.variables_set:
             raw_value = element[variable].get_value()
@@ -83,6 +89,12 @@ class PrepareArff():
             val = PrepareArff.filterVar(raw_value)
             result += val+","
         result = result[0:-1]
+        return result
+
+
+    @staticmethod
+    def write_learning_element(file_des,element):
+        result = PrepareArff.get_learning_element(element)
         file_des.write(result+"\n")
 
 

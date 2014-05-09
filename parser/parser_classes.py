@@ -91,4 +91,19 @@ class ScreenParser(GenericParser):
         return (Screen,self.screen_status_switch[event.screen_status])
 
 
+class ApplicationForegroundParser(GenericParser):
 
+    table = "applications_foreground"
+
+    def parse_value(self,event):
+        from datamodel.types import ApplicationForeground
+        return (ApplicationForeground,event.application_name)
+
+
+class ActivityParser(GenericParser):
+
+    table = "plugin_google_activity_recognition"
+
+    def parse_value(self,event):
+        from datamodel.types import Activity
+        return (Activity,event.activity_name)

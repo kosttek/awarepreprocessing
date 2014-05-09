@@ -1,6 +1,6 @@
 __author__ = 'kosttek'
 
-from datamodel.types import Time, Weather, Screen, ApplicationStart, Network, NetworkTrafficRec, NetworkTrafficSent
+from datamodel.types import Time, Weather, Screen, ApplicationStart, Network, NetworkTrafficRec, NetworkTrafficSent, ApplicationForeground, Activity
 
 
 class ConfigVals():
@@ -11,7 +11,9 @@ class ConfigVals():
         "network",
         "network_traffic",
         "plugin_weather_current",
-        "screen"
+        "screen",
+        "applications_foreground",
+        "plugin_google_activity_recognition"
     ]
 
     databasename = "aware"
@@ -27,9 +29,13 @@ class ConfigVals():
         ApplicationStart,
         Network,
         NetworkTrafficRec,
-        NetworkTrafficSent
+        NetworkTrafficSent,
+        Activity,
+        ApplicationForeground
+
     ]
 
     point_event_attributes=[
-        ApplicationStart
+        ApplicationStart,
+        ApplicationForeground
     ]
