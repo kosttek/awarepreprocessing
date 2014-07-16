@@ -1,6 +1,6 @@
 __author__ = 'kosttek'
 
-from datamodel.types import Time, Weather, Screen, ApplicationStart, Network, NetworkTrafficRec, NetworkTrafficSent, ApplicationForeground, Activity
+from datamodel.types import Time, Weather, Screen, ApplicationStart, Network, NetworkTrafficRec, NetworkTrafficSent, ApplicationForeground, Activity, NetworkTrafficMobile, NetworkTrafficWifi, DayTime
 
 
 class ConfigVals():
@@ -28,10 +28,11 @@ class ConfigVals():
         Screen,
         ApplicationStart,
         Network,
-        NetworkTrafficRec,
-        NetworkTrafficSent,
+        NetworkTrafficMobile,
+        NetworkTrafficWifi,
         Activity,
-        ApplicationForeground
+        ApplicationForeground,
+        DayTime
 
     ]
 

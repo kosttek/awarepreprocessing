@@ -5,7 +5,10 @@ __author__ = 'kosttek'
 
 
 class LearningSetElement():
-
+    '''
+    valies is dictionary of kay = Type and value Type() from types see GenericType
+    set g
+    '''
 
 
     def __init__(self):
@@ -23,7 +26,17 @@ class LearningSetElement():
     def clone(self):
         return deepcopy(self)
 
+    def clone2(self):
+
+        result = LearningSetElement()
+        for type , val in self.values.iteritems():
+            '''type is GenericType()'''
+            val_new = type()
+            val_new.set_value(val.get_value())
+            result.values[type]=val_new
+        return result
+
     def clear_from_point_events(self):
         for point_event in self.point_event_attributes:
-            self[point_event].set_value_none()
+            self[point_event].set_value(None)
 

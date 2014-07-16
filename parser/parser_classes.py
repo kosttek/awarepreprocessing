@@ -9,7 +9,8 @@ class GenericParser():
 
     def parse(self, event):
         changed_events_list = list()
-        changed_events_list.append(self.parse_time(event))
+        changed_events_list.append(self.parse_day(event))
+        changed_events_list.append(self.parse_daytime(event))
         value = self.parse_value(event)
         if isinstance(value, list):
             changed_events_list += value
@@ -20,11 +21,27 @@ class GenericParser():
             result[changed_event[0]] = changed_event[1]
         return result
 
-    def parse_time(self,event):
+    def parse_day(self,event):
         '''return  tuples (time,value)'''
         from datamodel.types import Time
         day_of_week = datetime.datetime.fromtimestamp(event.timestamp/1000).weekday()
         return (Time, day_of_week)
+
+    def parse_daytime(self,event):
+        '''return  tuples (time,value)'''
+        from datamodel.types import DayTime
+        hour_of_day = datetime.datetime.fromtimestamp(event.timestamp/1000).hour
+
+        if hour_of_day >= 20 or hour_of_day <= 1:
+            result = "evening"
+        elif hour_of_day <= 6:
+            result = "night"
+        elif hour_of_day <= 11:
+            result = "morning"
+        else:
+            result = "day" # 11 - 20
+        return (DayTime, result)
+
 
     #abstract
     def parse_value(self,event):
@@ -45,10 +62,16 @@ class NetworkParser(GenericParser):
 
     table = "network"
 
+    state_dict ={0:"OFF",1:"ON"}
+
     def parse_value(self,event):
         from datamodel.types import Network
-        return (Network,event.network_subtype)
+        state = self.state_dict[event.network_state]
+        result = event.network_subtype +"_"+state
+        return (Network,result)
 
+
+#todo remove
 class NetworkTrafficParser(GenericParser):
 
     table = "network_traffic"
@@ -71,6 +94,38 @@ class NetworkTrafficParser(GenericParser):
             return "ZERO"
         else:
             return "SMALL"
+
+class NetworkAllTrafficParser(GenericParser):
+
+    table = "network_traffic"
+
+    def parse_value(self,event):
+        from datamodel.types import NetworkTrafficWifi, NetworkTrafficMobile
+        type = event.network_type
+
+        traffic_rec_val = event.double_received_bytes
+        traffic_sent_val = event.double_sent_bytes
+
+        result = self.getVal(traffic_rec_val+traffic_sent_val)
+        #wifi
+        if type == 1:
+            return (NetworkTrafficWifi,result)
+
+        #mobile
+        elif type == 2:
+            return (NetworkTrafficMobile,result)
+        else:
+            return (NetworkTrafficWifi,"unknown_source_"+result)
+
+    def getVal(self,intval):
+        if intval > 60000:
+            return "BIG"
+        elif intval > 3000:
+            return "SMALL"
+        elif intval == 0:
+            return "ZERO"
+        else:
+            return "MINIMAL"
 
 class WeatherParser(GenericParser):
 
@@ -107,3 +162,23 @@ class ActivityParser(GenericParser):
     def parse_value(self,event):
         from datamodel.types import Activity
         return (Activity,event.activity_name)
+
+
+class CallParser(GenericParser):
+
+    table = "calls"
+
+    def parse_value(self,event):
+        from datamodel.types import Call
+        return (Call,event.call_type)
+
+
+class SmsParser(GenericParser):
+
+    table = "messages"
+
+    def parse_value(self,event):
+        from datamodel.types import Sms
+        return (Sms,event.message_type)
+
+

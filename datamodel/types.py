@@ -1,4 +1,4 @@
-from parser.parser_classes import NetworkTrafficParser, NetworkParser, ApplicationHistoryParser, ScreenParser, WeatherParser, ActivityParser, ApplicationForegroundParser
+from parser.parser_classes import NetworkTrafficParser, NetworkParser, ApplicationHistoryParser, ScreenParser, WeatherParser, ActivityParser, ApplicationForegroundParser, NetworkAllTrafficParser, CallParser, SmsParser
 
 __author__ = 'kosttek'
 
@@ -15,7 +15,8 @@ class GenericType():
 
     def set_value(self,value):
         self._value = value
-        self.add_to_value_set(value)
+        if value != None:
+            self.add_to_value_set(value)
 
     def get_value(self):
         return self._value
@@ -24,8 +25,11 @@ class GenericType():
         self._value = None
 
 
-
 class Time(GenericType):
+    parser = None
+
+
+class DayTime(GenericType):
     parser = None
 
 
@@ -39,6 +43,14 @@ class NetworkTrafficRec(GenericType):
 
 class NetworkTrafficSent(GenericType):
     parser = NetworkTrafficParser
+
+
+class NetworkTrafficWifi(GenericType):
+    parser = NetworkAllTrafficParser
+
+
+class NetworkTrafficMobile(GenericType):
+    parser = NetworkAllTrafficParser
 
 
 class Screen(GenericType):
@@ -61,3 +73,9 @@ class Activity(GenericType):
     parser = ActivityParser
 
 
+class Call(GenericType):
+    parser = CallParser
+
+
+class Sms(GenericType):
+    parser = SmsParser

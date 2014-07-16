@@ -17,7 +17,6 @@ class Parser():
         result = parser().parse(event['values'])
         return result
 
-
     def _create_table_parser_dict(self):
         result = dict()
         parser_set = set()

@@ -4,7 +4,7 @@ from parser.Parser import Parser
 __author__ = 'kosttek'
 from database import DatabaseAccess
 from Config import Config
-from conffiles.defaultconfigvalues import ConfigVals
+from conffiles.configvalues2 import ConfigVals
 
 class SortedRawAwareEvents(list):
     '''
@@ -40,6 +40,7 @@ class SortedRawAwareEvents(list):
         self._get_events_from_MySQL(username=Config.username, password=Config.password, databasename=Config.databasename, tables=Config.tables)
 
     def get_events_from_SQLite(self):
+        con = Config
         if (Config.dbfile or Config.tables) == None:
             print "Load config file!"
             print Config.dbfile, Config.tables
